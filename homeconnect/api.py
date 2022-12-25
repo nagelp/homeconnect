@@ -226,8 +226,9 @@ class HomeConnect(HomeConnectAPI):
     ):
         """Initialize the connection."""
         self.token_cache = token_cache or "homeconnect_oauth_token.json"
+        token = self.token_load() or None
         super().__init__(
-            None, client_id, client_secret, redirect_uri, api_url, self.token_dump
+            token, client_id, client_secret, redirect_uri, api_url, self.token_dump
         )
 
     def token_dump(self, token):
