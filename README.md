@@ -7,6 +7,8 @@ Simple Python client for the BSH Home Connect REST API implementing OAuth 2 auth
 To use this library, you have to sign up to the [Home Connect Developer Portal](https://developer.home-connect.com/) and register a new application
 to get a client ID, client secret, and redirect URI.
 
+Note: After registering an application in the developer portal it may take a few minutes until you can authenticate.
+
 ```python
 from homeconnect import HomeConnect
 hc = HomeConnect(my_clientid, my_clientsecret, my_redirecturi)
