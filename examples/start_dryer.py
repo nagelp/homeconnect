@@ -6,6 +6,7 @@ def print_status(app):
     print(app.name)
     print(yaml.dump(app.status))
 
+
 # Get credentials from environment variables
 clientid = os.getenv("HomeConnect_ClientID", "")
 clientsecret = os.getenv("HomeConnect_ClientSecret", "")
@@ -76,6 +77,7 @@ for app in appliances:
             )
 
         if conditions_met:
+            print("Looking good - sending start command to dryer.")
             # Prepare data object to set up dryer program
             # Docs: https://api-docs.home-connect.com/programs-and-options?#dryer
             dataobj = {"data": {"key": "LaundryCare.Dryer.Program.Cotton"}}
