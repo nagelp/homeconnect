@@ -1,4 +1,4 @@
-"""Taken from https://github.com/btubbs/sseclient"""
+"""Taken from https://github.com/btubbs/sseclient."""
 
 import codecs
 import logging
@@ -6,9 +6,8 @@ import re
 import time
 import warnings
 
-import requests
-import six
 from oauthlib.oauth2 import TokenExpiredError
+import requests
 from requests.exceptions import HTTPError
 
 # Technically, we should support streams that mix line endings.  This regex,
@@ -42,7 +41,7 @@ class SSEClient(object):
         self.requests_kwargs["headers"]["Accept"] = "text/event-stream"
 
         # Keep data here as it streams in
-        self.buf = u""
+        self.buf = ""
 
         self._connect()
 
@@ -55,6 +54,8 @@ class SSEClient(object):
         requester = self.session or requests
         self.resp = requester.get(self.url, stream=True, **self.requests_kwargs)
         self.resp_iterator = self.resp.iter_content(chunk_size=self.chunk_size)
+
+        self.resp.encoding = "UTF-8"
 
         # TODO: Ensure we're handling redirects.  Might also stick the 'origin'
         # attribute on Events like the Javascript spec requires.
@@ -84,7 +85,8 @@ class SSEClient(object):
                     raise EOFError()
                 self.buf += decoder.decode(next_chunk)
 
-            # except (StopIteration, requests.RequestException, EOFError, http.client.IncompleteRead, ValueError) as e:
+            # except (StopIteration, requests.RequestException, EOFError,
+            #         http.client.IncompleteRead, ValueError) as e:
             except Exception as e:
                 LOGGER.warning("Exception while reading event: ", exc_info=True)
                 time.sleep(self.retry / 1000.0)
@@ -112,9 +114,6 @@ class SSEClient(object):
             self.last_id = msg.id
 
         return msg
-
-    if six.PY2:
-        next = __next__
 
 
 class Event(object):
@@ -144,7 +143,8 @@ class Event(object):
 
     @classmethod
     def parse(cls, raw):
-        """
+        """Parse event message.
+
         Given a possibly-multiline string representing an SSE message, parse it
         and return a Event object.
         """
@@ -154,7 +154,7 @@ class Event(object):
             if m is None:
                 # Malformed line.  Discard but warn.
                 warnings.warn('Invalid SSE line: "%s"' % line, SyntaxWarning)
-                LOGGER.warn('Invalid SSE line: "%s"', line)
+                LOGGER.warning('Invalid SSE line: "%s"', line)
                 continue
 
             name = m.group("name")

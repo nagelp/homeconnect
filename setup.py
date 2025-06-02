@@ -1,14 +1,13 @@
-from setuptools import setup, find_packages
-
+from setuptools import find_packages, setup
 
 with open("README.md") as f:
     LONG_DESCRIPTION = f.read()
 
 setup(
     name="homeconnect",
-    version="0.7.2",
+    version="0.8.0",
     author="David M. Straub",
-    author_email="david.straub@tum.de",
+    author_email="straub@protonmail.com",
     url="https://github.com/DavidMStraub/homeconnect",
     description="Python client for the BSH Home Connect REST API",
     long_description=LONG_DESCRIPTION,
@@ -16,5 +15,9 @@ setup(
     license="MIT",
     packages=find_packages(),
     install_requires=["requests", "requests_oauthlib"],
-    extras_require={"testing": ["nose",],},
+    extras_require={
+        "testing": [
+            "nose",
+        ],
+    },
 )
